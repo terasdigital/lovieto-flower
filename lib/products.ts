@@ -75,3 +75,22 @@ export async function getCategories() {
   const unique = Array.from(new Set((data || []).map((p) => p.category)));
   return unique;
 }
+
+// produk terkait: kategori sama, kecuali produk yang sedang di buka
+export async function getRelatedProducts(
+  category: string,
+  excludeSlug: string,
+  limit = 4,
+) {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("is_active", true)
+    .eq("category", category)
+    .neq("slug", excludeSlug)
+    .limit(limit);
+
+  if (error) throw error;
+  return data || [];
+}
