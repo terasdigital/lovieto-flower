@@ -38,11 +38,12 @@ export default async function KatalogPage({
       {/* Search - form GET native, tanpa JS */}
       <form method="GET" className="mb-6">
         {kategori && <input type="hidden" name="kategori" value={kategori} />}
-        <div className="flex gap-2 max-w-md">
+        <div className="flex gap-2 max-w-md items-center">
           <Input
             name="q"
             defaultValue={q || ""}
             placeholder="Cari bunga, bouquet, tanaman..."
+            className="border rounded-lg w-3/4 p-2"
           />
           <Button type="submit">Cari</Button>
         </div>
@@ -50,12 +51,12 @@ export default async function KatalogPage({
 
       <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-6">
         {/* Sidebar kategori */}
-        <aside>
-          <div className="rounded-lg border bg-card p-4">
-            <h2 className="text-sm font-bold uppercase tracking-wide mb-3">
+        <aside className="min-w-0">
+          <div className="rounded-lg border bg-card p-3 md:p-4">
+            <h2 className="text-sm font-bold uppercase tracking-wide mb-3 hidden md:block">
               Kategori
             </h2>
-            <ul className="space-y-1">
+            <ul className="gap-2 flex md:flex-col overflow-x-auto whitespace-nowrap md:overflow-visible">
               <li>
                 <Link
                   href="/katalog"
@@ -88,7 +89,7 @@ export default async function KatalogPage({
               Tidak ada produk ditemukan. Coba kata kunci lain
             </div>
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product}></ProductCard>
               ))}
