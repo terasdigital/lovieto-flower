@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import { createClient } from "./supabase/server";
 
@@ -5,6 +6,11 @@ import { createClient } from "./supabase/server";
  * Varian non-redirect untuk API route: mengembalikan user admin atau null.
  */
 export async function getAdminUser() {
+  // Admin = selalu request-time. Tanpa ini, prerender shell di dev akan
+  // menjalankan internals auth Supabase (yang memanggil Date.now) dan
+  // memicu error "unstable value while prerendering".
+  await connection();
+
   const supabase = await createClient();
   const {
     data: { user },
