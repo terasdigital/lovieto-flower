@@ -1,6 +1,7 @@
 import { getAdminUser } from "@/lib/auth";
 import { validateProductInput } from "@/lib/product-input";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -62,6 +63,9 @@ export async function POST(request: NextRequest) {
     );
     if (vErr) console.error("Insert variants gagal:", vErr);
   }
+
+  // katalog & home harus melihat produk baru tanpa menunggu cache kedaluwarsa
+  revalidateTag("products", "max");
 
   return NextResponse.json({ id: product.id, slug: product.slug });
 }

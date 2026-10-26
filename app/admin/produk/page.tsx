@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ProductDeleteButton } from "@/components/admin/product-delete-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -47,13 +48,14 @@ export default async function ProdukAdminPage() {
             {(products ?? []).map((p) => (
               <tr key={p.id} className="border-b last:border-b-0">
                 <td className="px-3 py-2">
-                  <div className="size-12 rounded bg-muted overflow-hidden flex items-center justify-center text-xs text-muted-foreground">
+                  <div className="relative size-12 rounded bg-muted overflow-hidden text-xs text-muted-foreground">
                     {p.images?.[0] ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Image
                         src={p.images[0]}
                         alt=""
-                        className="h-full w-full object-cover"
+                        fill
+                        sizes="48px"
+                        className="object-cover"
                       />
                     ) : (
                       "—"

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCartItems } from "@/hooks/use-cart-item";
 import { useCart } from "@/stores/cart";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -56,13 +57,14 @@ export function CartView() {
             className="flex gap-4 p-4 border-b last:border-b-0"
           >
             {/* Gambar */}
-            <div className="size-24 shrink-0 rounded-lg bg-muted flex items-center jusn">
+            <div className="relative size-24 shrink-0 rounded-lg bg-muted overflow-hidden">
               {item.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   src={item.image}
                   alt={item.name}
-                  className="h-full w-full object-cover"
+                  fill
+                  sizes="96px"
+                  className="object-cover"
                 />
               ) : (
                 <span className="text-xs text-muted-foreground">[Foto]</span>

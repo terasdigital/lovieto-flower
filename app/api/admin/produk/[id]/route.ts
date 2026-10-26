@@ -1,6 +1,7 @@
 import { getAdminUser } from "@/lib/auth";
 import { validateProductInput } from "@/lib/product-input";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 type Params = { params: Promise<{ id: string }> };
@@ -91,6 +92,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     }
   }
 
+  revalidateTag("products", "max");
   return NextResponse.json({ ok: true });
 }
 
@@ -115,5 +117,6 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
     );
   }
 
+  revalidateTag("products", "max");
   return NextResponse.json({ ok: true });
 }

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ProductCard, ProductCardData } from "@/components/cards/product-card";
 import { ProductPurchase } from "@/components/products/product-purchase";
 import { Badge } from "@/components/ui/badge";
@@ -5,8 +6,6 @@ import { gram, rupiah } from "@/lib/format";
 import { getProductBySlug, getRelatedProducts } from "@/lib/products";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
-export const instant = false;
 
 type VariantRow = {
   id: string;
@@ -49,13 +48,15 @@ export default async function ProductDetailPage({
 
       <div className="grid md:grid-cols-2 gap-10 mb-12">
         {/* Galeri */}
-        <div className="bg-muted rounded-lg h-[480px] flex items-center justify-center">
+        <div className="relative bg-muted rounded-lg h-[480px]">
           {product.images?.[0] ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={product.images[0]}
               alt={product.name}
-              className="h-full w-full object-cover rounded-lg"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="rounded-lg object-cover"
+              priority
             />
           ) : (
             <span className="text-muted-foreground">[Foto Utama Produk]</span>

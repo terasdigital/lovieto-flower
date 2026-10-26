@@ -5,8 +5,6 @@ import { getFeatured } from "@/lib/products";
 import { CreditCard, MessageCircle, Shield, Truck } from "lucide-react";
 import Link from "next/link";
 
-export const instant = false;
-
 export default async function HomePage() {
   const featuredProducts = await getFeatured(4);
 

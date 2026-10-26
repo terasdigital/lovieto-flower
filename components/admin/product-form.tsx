@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import type { VariantInput } from "@/lib/product-input";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
@@ -271,8 +272,7 @@ export function ProductForm({
                 key={url}
                 className="relative size-24 rounded-lg overflow-hidden border"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={url} alt="" className="h-full w-full object-cover" />
+                <Image src={url} alt="" fill sizes="96px" className="object-cover" />
                 <button
                   type="button"
                   onClick={() =>

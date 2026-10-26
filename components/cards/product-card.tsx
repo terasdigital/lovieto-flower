@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
@@ -18,7 +19,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
   return (
     <Link className="block h-full" href={`/produk/${product.slug}`}>
       <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full">
-        <div className="bg-muted h-48 flex items-center justify-center relative">
+        <div className="relative bg-muted h-48">
           {product.images?.[0] ? (
             // sementara pakai <img>; upgrade ke next/image di pass optimasi
             // eslint-disable-next-line @next/next/no-img-element

@@ -1,10 +1,8 @@
 import { ProductCard } from "@/components/cards/product-card";
 import { Button } from "@/components/ui/button";
 import { getCategories, getProducts } from "@/lib/products";
-import { Input } from "@base-ui/react";
+import { Input } from "@/components/ui/input";
 import Link from "next/link";
-
-export const instant = false;
 
 export const metadata = {
   title: "Katalog - Lovieto Flower",

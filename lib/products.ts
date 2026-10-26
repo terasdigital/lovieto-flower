@@ -1,4 +1,14 @@
-import { createClient } from "@/lib/supabase/server";
+import { cacheLife, cacheTag } from "next/cache";
+import { createPublicClient } from "@/lib/supabase/public";
+
+/**
+ * Semua fungsi di file ini memakai "use cache" (Cache Components):
+ * - hasilnya disimpan di cache → boleh dieksekusi saat prerender
+ * - tag "products" → di-invalidate saat admin membuat/mengubah/menghapus
+ *   produk (lihat revalidateTag di app/api/admin/produk/*)
+ * - cacheLife("hours") → jaring pengaman kalau ada perubahan langsung
+ *   lewat dashboard Supabase
+ */
 
 // ambil semua produk (dengan filter & pagination)
 export async function getProducts(params?: {
@@ -7,7 +17,11 @@ export async function getProducts(params?: {
   page?: number;
   limit?: number;
 }) {
-  const supabase = await createClient();
+  "use cache";
+  cacheTag("products");
+  cacheLife("hours");
+
+  const supabase = createPublicClient();
   const { category, q, page = 1, limit = 12 } = params || {};
 
   let query = supabase
@@ -37,7 +51,11 @@ export async function getProducts(params?: {
 
 // ambil 1 produk berdasarkan slug (untuk halaman detail)
 export async function getProductBySlug(slug: string) {
-  const supabase = await createClient();
+  "use cache";
+  cacheTag("products");
+  cacheLife("hours");
+
+  const supabase = createPublicClient();
   const { data, error } = await supabase
     .from("products")
     .select("*, variants(*)")
@@ -51,7 +69,11 @@ export async function getProductBySlug(slug: string) {
 
 // ambil produk featured (untuk homepage)
 export async function getFeatured(limit = 4) {
-  const supabase = await createClient();
+  "use cache";
+  cacheTag("products");
+  cacheLife("hours");
+
+  const supabase = createPublicClient();
   const { data, error } = await supabase
     .from("products")
     .select("*, variants(*)")
@@ -65,7 +87,11 @@ export async function getFeatured(limit = 4) {
 
 // ambil kategori unik (untuk filter sidebar)
 export async function getCategories() {
-  const supabase = await createClient();
+  "use cache";
+  cacheTag("products");
+  cacheLife("hours");
+
+  const supabase = createPublicClient();
   const { data, error } = await supabase
     .from("products")
     .select("category")
@@ -76,13 +102,17 @@ export async function getCategories() {
   return unique;
 }
 
-// produk terkait: kategori sama, kecuali produk yang sedang di buka
+// produk terkait: kategori sama, kecuali produk yang sedang dibuka
 export async function getRelatedProducts(
   category: string,
   excludeSlug: string,
-  limit = 4,
+  limit = 4
 ) {
-  const supabase = await createClient();
+  "use cache";
+  cacheTag("products");
+  cacheLife("hours");
+
+  const supabase = createPublicClient();
   const { data, error } = await supabase
     .from("products")
     .select("*")
