@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
+import { WishlistToggle } from "../wishlist/wishlist-toggle";
 
 interface Variant {
   id: string;
@@ -114,6 +115,16 @@ export function ProductPurchase({ product, variants }: ProductPurchaseProps) {
         <Button size="lg" className="flex-1" onClick={handleAdd}>
           + Keranjang
         </Button>
+        <WishlistToggle
+          item={{
+            productId: product.id,
+            slug: product.slug,
+            name: product.name,
+            image: product.images?.[0],
+            basePrice: Number(product.base_price),
+            weightGrams: product.weight_grams,
+          }}
+        />
       </div>
 
       <Button

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "@/stores/cart";
+import { useWishlistCount } from "@/hooks/use-wishlist";
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
 import { Button } from "../ui/button";
@@ -21,6 +22,7 @@ function useCartItemCount() {
 
 export function Header() {
   const itemCount = useCartItemCount();
+  const wishlistCount = useWishlistCount();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background">
@@ -40,8 +42,18 @@ export function Header() {
           </Link>
         </nav>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon">
+          <Button
+            variant="ghost"
+            size="icon"
+            render={<Link href="/wishlist" className="relative" />}
+            nativeButton={false}
+          >
             <Heart className="h-5 w-5" />
+            {wishlistCount > 0 && (
+              <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
+                {wishlistCount}
+              </span>
+            )}
           </Button>
           <Button
             variant="ghost"

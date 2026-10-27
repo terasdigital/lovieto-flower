@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
+import { WishlistToggle } from "../wishlist/wishlist-toggle";
 import { gram, rupiah } from "@/lib/format";
 
 export interface ProductCardData {
@@ -18,37 +19,50 @@ export interface ProductCardData {
 export function ProductCard({ product }: { product: ProductCardData }) {
   return (
     <Link className="block h-full" href={`/produk/${product.slug}`}>
-      <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full">
-        <div className="relative bg-muted h-48">
+      <Card className="h-full overflow-hidden transition-shadow hover:shadow-lg">
+        <div className="relative h-48 bg-muted">
           {product.images?.[0] ? (
-            // sementara pakai <img>; upgrade ke next/image di pass optimasi
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={product.images[0]}
               alt={product.name}
-              className="h-full w-full object-cover"
+              fill
+              sizes="(max-width: 640px) 50vw, 25vw"
+              className="object-cover"
             />
           ) : (
-            <span className="text-muted-foreground text-sm">[Foto Produk]</span>
+            <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+              [Foto Produk]
+            </div>
           )}
           {product.is_featured && (
-            <Badge className="absolute top-3 left-3">Popular</Badge>
+            <Badge className="absolute left-3 top-3">Popular</Badge>
           )}
-          <CardContent className="p-4">
-            <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">
-              {product.category}
-            </p>
-            <h3 className="font-semibold mb-2 line-clamp-1">{product.name}</h3>
-            <div className="flex items-center justify-between">
-              <p className="text-lg font-bold text-primary">
-                {rupiah(Number(product.base_price))}
-              </p>
-              <span className="text-xs text-muted-foreground">
-                {gram(product.weight_grams)}
-              </span>
-            </div>
-          </CardContent>
+          <WishlistToggle
+            item={{
+              productId: product.id,
+              slug: product.slug,
+              name: product.name,
+              image: product.images?.[0],
+              basePrice: Number(product.base_price),
+              weightGrams: product.weight_grams,
+            }}
+            className="absolute right-3 top-3"
+          />
         </div>
+        <CardContent className="p-4">
+          <p className="mb-1 text-xs uppercase tracking-wide text-muted-foreground">
+            {product.category}
+          </p>
+          <h3 className="mb-2 line-clamp-1 font-semibold">{product.name}</h3>
+          <div className="flex items-center justify-between">
+            <p className="text-lg font-bold text-primary">
+              {rupiah(Number(product.base_price))}
+            </p>
+            <span className="text-xs text-muted-foreground">
+              {gram(product.weight_grams)}
+            </span>
+          </div>
+        </CardContent>
       </Card>
     </Link>
   );
